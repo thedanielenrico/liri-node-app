@@ -31,7 +31,7 @@ if (process.argv[2] === "movie-this") {
 
     } else {
 
-        var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+        var queryUrl = "http://www.omdbapi.com/?t=" + process.argv[3] + "&y=&plot=short&apikey=trilogy";
         axios.get(queryUrl).then(
             function (response) {
                 console.log("Title: " + response.data.Title);
@@ -45,4 +45,19 @@ if (process.argv[2] === "movie-this") {
             }
         );
     }
+}
+var bandName = "";
+for (var i = 3; i < process.argv.length; i++) {
+    bandName = bandName + "+" + process.argv[i];
+}
+if (process.argv[2] === "concert-this"){
+    var queryUrl = "https://rest.bandsintown.com/artists/" + process.argv[3] + "/events?app_id=codingbootcamp";
+        axios.get(queryUrl).then(
+            function (response) {
+                console.log(response.data[0].venue.name)
+                console.log(response.data[0].datetime)
+                
+                console.log(queryUrl)
+            }
+        );
 }
