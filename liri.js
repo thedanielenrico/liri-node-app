@@ -6,27 +6,16 @@ var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
 
 
-
-
-
-
-var bandName = process.argv[3]
-for (var i = 4; i < process.argv.length; i++) {
-    bandName = bandName + "+" + process.argv[i];
-}
-var songName = process.argv[3]
-for (var i = 4; i < process.argv.length; i++) {
-    songName = songName + "+" + process.argv[i];
-}
-
-
-
-var movieName = process.argv[3];
-for (var i = 4; i < process.argv.length; i++) {
-    movieName = movieName + "+" + process.argv[i];
-}
 // Spotify API
 if (process.argv[2] === "spotify-this-song") {
+    var songName = process.argv[3]
+    for (var i = 4; i < process.argv.length; i++) {
+        songName = songName + "+" + process.argv[i];
+    }
+    if (!songName) {
+        songName = "The Sign"
+    }
+
     spotify.search({
         type: 'track', query: songName,
         limit: 10
@@ -36,15 +25,22 @@ if (process.argv[2] === "spotify-this-song") {
                 return console.log('Error occurred: ' + err);
             }
             // console.log(data);
-            // console.log(data.tracks.items[0].album.artists[0].name);
+            // console.log(data.tracks.items[0].name);
             console.log("Artist: " + data.tracks.items[0].album.artists[0].name)
+            console.log("Track name: " + data.tracks.items[0].name)
             console.log("Album: " + data.tracks.items[0].album.name)
+            console.log("Spotify link: " + data.tracks.items[0].album.external_urls.spotify)
 
         });
+
 }
 // OMDB instance
 if (process.argv[2] === "movie-this") {
-    if (movieName === "") {
+    var movieName = process.argv[3];
+    for (var i = 4; i < process.argv.length; i++) {
+        movieName = movieName + "+" + process.argv[i];
+    }
+    if (!movieName) {
         var queryUrl = "http://www.omdbapi.com/?t=mr+nobody&y=&plot=short&apikey=trilogy";
         axios.get(queryUrl).then(
             function (response) {
@@ -76,6 +72,10 @@ if (process.argv[2] === "movie-this") {
 }
 // Bands in Town instance
 if (process.argv[2] === "concert-this") {
+    var bandName = process.argv[3]
+    for (var i = 4; i < process.argv.length; i++) {
+        bandName = bandName + "+" + process.argv[i];
+    }
     var queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp";
     axios.get(queryUrl).then(
         function (response) {
