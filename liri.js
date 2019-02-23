@@ -14,6 +14,11 @@ var bandName = process.argv[3]
 for (var i = 4; i < process.argv.length; i++) {
     bandName = bandName + "+" + process.argv[i];
 }
+var songName = process.argv[3]
+for (var i = 4; i < process.argv.length; i++) {
+    songName = songName + "+" + process.argv[i];
+}
+
 
 
 var movieName = process.argv[3];
@@ -23,7 +28,7 @@ for (var i = 4; i < process.argv.length; i++) {
 // Spotify API
 if (process.argv[2] === "spotify-this-song") {
     spotify.search({
-        type: 'track', query: process.argv[3],
+        type: 'track', query: songName,
         limit: 10
     },
         function (err, data) {
@@ -31,9 +36,9 @@ if (process.argv[2] === "spotify-this-song") {
                 return console.log('Error occurred: ' + err);
             }
             // console.log(data);
-            // console.log(data.tracks.items[0]);
-            // console.log("Artist: " + data.tracks.items[0].artists.name)
-            console.log("Album: " + data.tracks.items[0].album.artists)
+            // console.log(data.tracks.items[0].album.artists[0].name);
+            console.log("Artist: " + data.tracks.items[0].album.artists[0].name)
+            console.log("Album: " + data.tracks.items[0].album.name)
 
         });
 }
