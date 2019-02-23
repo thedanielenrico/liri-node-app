@@ -33,7 +33,7 @@ if (process.argv[2] === "spotify-this-song") {
             // console.log(data);
             // console.log(data.tracks.items[0]);
             // console.log("Artist: " + data.tracks.items[0].artists.name)
-            console.log("Album: " + data.tracks.items[0].album)
+            console.log("Album: " + data.tracks.items[0].album.artists)
 
         });
 }
@@ -74,9 +74,15 @@ if (process.argv[2] === "concert-this") {
     var queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp";
     axios.get(queryUrl).then(
         function (response) {
-            console.log(response.data[0].venue.name)
-            console.log(response.data[0].datetime)
-            console.log(queryUrl)
+            if (response.data.venue === undefined) {
+                console.log("There are no concerts for this artist")
+            } else {
+                for (var i = 0; i < 6; i++)
+                    console.log("Venue: " + response.data[i].venue.name)
+                console.log("Location: " + response.data[i].venue.city + ", " + response.data[i].venue.region)
+                console.log("Showtime: " + response.data[i].datetime)
+                console.log(queryUrl)
+            }
         }
     );
 }
