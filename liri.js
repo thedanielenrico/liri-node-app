@@ -8,10 +8,7 @@ var spotify = new Spotify(keys.spotify);
 
 // Spotify API
 if (process.argv[2] === "spotify-this-song") {
-    var songName = process.argv[3]
-    for (var i = 4; i < process.argv.length; i++) {
-        songName = songName + "+" + process.argv[i];
-    }
+    var songName = process.argv.splice(3).join("+");
     if (!songName) {
         songName = "The Sign"
     }
@@ -24,8 +21,6 @@ if (process.argv[2] === "spotify-this-song") {
             if (err) {
                 return console.log('Error occurred: ' + err);
             }
-            // console.log(data);
-            // console.log(data.tracks.items[0].name);
             console.log("Artist: " + data.tracks.items[0].album.artists[0].name)
             console.log("Track name: " + data.tracks.items[0].name)
             console.log("Album: " + data.tracks.items[0].album.name)
@@ -36,10 +31,7 @@ if (process.argv[2] === "spotify-this-song") {
 }
 // OMDB instance
 if (process.argv[2] === "movie-this") {
-    var movieName = process.argv[3];
-    for (var i = 4; i < process.argv.length; i++) {
-        movieName = movieName + "+" + process.argv[i];
-    }
+    var movieName = process.argv.splice(3).join("+");
     if (!movieName) {
         var queryUrl = "http://www.omdbapi.com/?t=mr+nobody&y=&plot=short&apikey=trilogy";
         axios.get(queryUrl).then(
@@ -72,10 +64,7 @@ if (process.argv[2] === "movie-this") {
 }
 // Bands in Town instance
 if (process.argv[2] === "concert-this") {
-    var bandName = process.argv[3]
-    for (var i = 4; i < process.argv.length; i++) {
-        bandName = bandName + "+" + process.argv[i];
-    }
+    var bandName = process.argv.splice(2).join("+");
     var queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp";
     axios.get(queryUrl).then(
         function (response) {
