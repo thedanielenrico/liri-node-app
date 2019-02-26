@@ -7,14 +7,16 @@ var spotify = new Spotify(keys.spotify);
 
 
 // Spotify API
-if (process.argv[2] === "spotify-this-song") {
-    var songName = process.argv.splice(3).join("+");
-    if (!songName) {
-        songName = "The Sign"
+
+var input = process.argv.splice(3).join("+");
+var command = process.argv[2];
+if (command === "spotify-this-song") {
+    if (!input) {
+        input = "The Sign"
     }
 
     spotify.search({
-        type: 'track', query: songName,
+        type: 'track', query: input,
         limit: 10
     },
         function (err, data) {
@@ -30,9 +32,8 @@ if (process.argv[2] === "spotify-this-song") {
 
 }
 // OMDB instance
-if (process.argv[2] === "movie-this") {
-    var movieName = process.argv.splice(3).join("+");
-    if (!movieName) {
+if (command === "movie-this") {
+    if (!input) {
         var queryUrl = "http://www.omdbapi.com/?t=mr+nobody&y=&plot=short&apikey=trilogy";
         axios.get(queryUrl).then(
             function (response) {
@@ -48,7 +49,7 @@ if (process.argv[2] === "movie-this") {
 
     } else {
 
-        var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+        var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
         axios.get(queryUrl).then(
             function (response) {
                 console.log("Title: " + response.data.Title);
@@ -63,12 +64,11 @@ if (process.argv[2] === "movie-this") {
     }
 }
 // Bands in Town instance
-if (process.argv[2] === "concert-this") {
-    var bandName = process.argv.splice(2).join("+");
-    var queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp";
+if (command === "concert-this") {
+    var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp";
     axios.get(queryUrl).then(
         function (response) {
-            if (response.data.venue === undefined) {
+            if (response.data.length === 0) {
                 console.log("There are no concerts for this artist")
             } else {
                 for (var i = 0; i < 6; i++)
@@ -79,4 +79,20 @@ if (process.argv[2] === "concert-this") {
             }
         }
     );
+}
+// Do this instance
+if (command === "do-what-it-says") {
+    fs.readFile("random.txt", "utf8", function (err, data) {
+        var randomText = data.split(',')[0].trim();
+        console.log(randomText)
+        if (err) {
+            console.log("Error occured: " + err)
+        }
+
+        if (randomText === "spotify-this-song") {
+            command = "spotify-this-song";
+            input = data.split(',')[1].trim();
+            console.log(input)
+        }
+    })
 }
