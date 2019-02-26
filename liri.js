@@ -96,3 +96,4 @@ if (command === "do-what-it-says") {
         }
     })
 }
+console.log("sup")
