@@ -75,6 +75,10 @@ if (command === "concert-this") {
     concertThis(input);
 }
 function concertThis(input) {
+    if (!input) {
+        console.log("Please enter a band name")
+        return;
+    }
     var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp";
     axios.get(queryUrl).then(
         function (response) {
