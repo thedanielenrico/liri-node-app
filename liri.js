@@ -11,6 +11,9 @@ var spotify = new Spotify(keys.spotify);
 var input = process.argv.splice(3).join("+");
 var command = process.argv[2];
 if (command === "spotify-this-song") {
+    spotifyThis(input);
+}
+function spotifyThis(input) {
     if (!input) {
         input = "The Sign"
     }
@@ -30,9 +33,13 @@ if (command === "spotify-this-song") {
 
         });
 
+
 }
 // OMDB instance
 if (command === "movie-this") {
+    movieThis(input);
+}
+function movieThis(input) {
     if (!input) {
         var queryUrl = "http://www.omdbapi.com/?t=mr+nobody&y=&plot=short&apikey=trilogy";
         axios.get(queryUrl).then(
@@ -65,6 +72,9 @@ if (command === "movie-this") {
 }
 // Bands in Town instance
 if (command === "concert-this") {
+    concertThis(input);
+}
+function concertThis(input) {
     var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp";
     axios.get(queryUrl).then(
         function (response) {
@@ -84,16 +94,16 @@ if (command === "concert-this") {
 if (command === "do-what-it-says") {
     fs.readFile("random.txt", "utf8", function (err, data) {
         var randomText = data.split(',')[0].trim();
-        console.log(randomText)
+        input = data.split(',')[1].trim();
         if (err) {
             console.log("Error occured: " + err)
         }
-
         if (randomText === "spotify-this-song") {
-            command = "spotify-this-song";
-            input = data.split(',')[1].trim();
-            console.log(input)
+            spotifyThis(input)
+        } else if (randomText === "movie-this") {
+            movieThis(input);
+        } else if (randomText === "concert-this") {
+            concertThis(input);
         }
     })
 }
-console.log("sup")
