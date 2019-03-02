@@ -4,6 +4,8 @@ var axios = require("axios");
 require("dotenv").config();
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
+var moment = require('moment');
+moment().format();
 
 
 // Spotify API
@@ -85,11 +87,14 @@ function concertThis(input) {
             if (response.data.length === 0) {
                 console.log("There are no concerts for this artist")
             } else {
-                for (var i = 0; i < 6; i++)
+                for (var i = 0; i < 6; i++) {
+                    var m = moment(response.data[i].datetime, moment.HTML5_FMT.DATETIME_LOCAL_SECONDS)
+                    var momentParse = m.format("MM-DD-YYYY");
                     console.log("Venue: " + response.data[i].venue.name)
-                console.log("Location: " + response.data[i].venue.city + ", " + response.data[i].venue.region)
-                console.log("Showtime: " + response.data[i].datetime)
-                console.log(queryUrl)
+                    console.log("Location: " + response.data[i].venue.city + ", " + response.data[i].venue.region)
+                    console.log("Showtime: " + momentParse)
+                    console.log(queryUrl)
+                }
             }
         }
     );
